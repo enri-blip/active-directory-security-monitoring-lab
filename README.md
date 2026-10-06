@@ -54,29 +54,69 @@ The goal of the lab is to understand how Windows authentication activity is gene
 
 ## Screenshots
 
-Add your strongest screenshots here:
+### 1. Authentication Failure Simulation
 
-### 1. Active Directory / Domain Controller
-![Active Directory](screenshots/01-active-directory.png)
+A controlled SMB authentication attempt was generated from the Kali Linux.
 
-### 2. Windows Security Event
-![Windows Event](screenshots/02-windows-security-event.png)
+![Attack Simulation](screenshots/01-attack-simulation.png)
 
-### 3. Wazuh Detection / Event Investigation
-![Wazuh](screenshots/03-wazuh-event.png)
+The authentication attempt resulted in `STATUS_LOGON_FAILURE`.
 
-### 4. Lab Infrastructure
-![Lab](screenshots/04-lab-infrastructure.png)
 
+### 2. Windows Security Event 4625
+
+The failed authentication was recorded in the Windows Security log as Event ID `4625`.
+
+![Event 4625 Details](screenshots/02-event-4625-details.png)
+
+Key fields observed:
+
+- Event ID: 4625
+- Logon Type: 3
+- Account: Andrii
+- Domain: soclab.test
+- Failure Reason: Unknown user name or bad password
+- Source IP: 192.168.122.56
+- Authentication Package: NTLM
+
+![Event Host Information](screenshots/03-event-4625-host.png)
+
+The event was recorded on `DC01.soclab.test`.
+
+
+### 3. Source IP Correlation
+
+PowerShell was used to filter failed logon events originating from the Kali Linux IP address.
+
+![Source IP Correlation](screenshots/04-source-ip-correlation.png)
+
+Multiple Event ID 4625 records were identified from `192.168.122.56`.
+
+
+### 4. Wazuh Monitoring Infrastructure
+
+Both the Windows workstation and Domain Controller were connected to Wazuh.
+
+![Wazuh Agents](screenshots/05-wazuh-agents.png)
+
+
+### 5. SIEM Detection
+
+Wazuh detected the failed authentication activity generated against the Active Directory environment.
+
+![Wazuh Detection](screenshots/06-wazuh-detection.png)
+
+Detection details:
+
+- Agent: DC01
+- Rule description: Logon Failure - Unknown user or bad password
+- Rule level: 5
+- Rule ID: 60122
 ## What I Learned
 
 This lab helped me understand the full path from Windows activity to SIEM visibility.
 
 Instead of only reading about authentication logs, I worked with the events directly, inspected their fields, and used Wazuh to investigate the same activity from a SOC analyst perspective.
-
-The most useful part of the project was learning how to move from a raw security event to an analyst question:
-
-**What happened, which account was involved, where did the activity come from, and is it suspicious?**
 
 ## Next Improvements
 
