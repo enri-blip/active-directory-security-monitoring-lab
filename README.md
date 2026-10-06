@@ -118,13 +118,7 @@ This lab helped me understand the full path from Windows activity to SIEM visibi
 
 Instead of only reading about authentication logs, I worked with the events directly, inspected their fields, and used Wazuh to investigate the same activity from a SOC analyst perspective.
 
-## Next Improvements
 
-- Add custom detection rules
-- Add more Windows authentication scenarios
-- Create incident timelines
-- Map selected detections to MITRE ATT&CK
-- Add a short incident report for each scenario
 
 ## Disclaimer
 
